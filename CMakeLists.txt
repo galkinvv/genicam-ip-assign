@@ -44,6 +44,7 @@ if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
     # findable via RUNPATH as dependencies of 'intermediate' imported libs (like libarena.so.0=>libGCBase_gcc54_v3_3_LUCID.so)
     target_link_libraries(genicam_ip_assign PRIVATE "-Wl,--enable-new-dtags" "-Wl,-rpath=$ORIGIN" "-Wl,--no-as-needed")
     target_compile_options(genicam_ip_assign PRIVATE "-Wall")
+    target_compile_options(genicam_ip_assign_lib PRIVATE "-Wall")
 endif()
 
 if(EXISTS "/usr/src/googletest/googletest/src/gtest-all.cc")
@@ -52,6 +53,7 @@ if(EXISTS "/usr/src/googletest/googletest/src/gtest-all.cc")
     target_include_directories(genicam_ip_assign_smoke_test PRIVATE "/usr/src/googletest/googletest/")
     target_link_libraries(genicam_ip_assign_smoke_test PUBLIC genicam_ip_assign_lib "${CMAKE_THREAD_LIBS_INIT}")
     target_link_libraries(genicam_ip_assign_smoke_test PRIVATE "-Wl,--enable-new-dtags" "-Wl,-rpath=$ORIGIN" "-Wl,--no-as-needed")
+    target_compile_options(genicam_ip_assign_smoke_test PRIVATE "-Wall")
 
     install(TARGETS genicam_ip_assign_smoke_test 
             RUNTIME DESTINATION bin
