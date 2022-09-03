@@ -19,10 +19,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(GenicamArena REQUIRED)
 
-add_executable(genicam_ip_assign "genicam-ip-assign.cpp")
-target_link_libraries(genicam_ip_assign PUBLIC GenicamArena)
 
-install(TARGETS genicam_ip_assign
+add_library(genicam_ip_assign_lib STATIC "genicam-ip-assign.cpp")
+target_link_libraries(genicam_ip_assign_lib PUBLIC GenicamArena)
+
+add_executable(genicam_ip_assign "main.cpp")
+target_link_libraries(genicam_ip_assign PUBLIC genicam_ip_assign_lib)
+
+install(TARGETS genicam_ip_assign 
         RUNTIME DESTINATION bin
 )
 
@@ -42,3 +46,14 @@ if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
     target_compile_options(genicam_ip_assign PRIVATE "-Wall")
 endif()
 
+if(EXISTS "/usr/src/googletest/googletest/src/gtest-all.cc")
+    find_package(Threads REQUIRED)
+    add_executable(genicam_ip_assign_smoke_test "smoke_test.cpp" "/usr/src/googletest/googletest/src/gtest-all.cc" "/usr/src/googletest/googletest/src/gtest_main.cc")
+    target_include_directories(genicam_ip_assign_smoke_test PRIVATE "/usr/src/googletest/googletest/")
+    target_link_libraries(genicam_ip_assign_smoke_test PUBLIC genicam_ip_assign_lib "${CMAKE_THREAD_LIBS_INIT}")
+    target_link_libraries(genicam_ip_assign_smoke_test PRIVATE "-Wl,--enable-new-dtags" "-Wl,-rpath=$ORIGIN" "-Wl,--no-as-needed")
+
+    install(TARGETS genicam_ip_assign_smoke_test 
+            RUNTIME DESTINATION bin
+    )
+endif()
