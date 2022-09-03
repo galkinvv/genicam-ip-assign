@@ -8,6 +8,10 @@ Build requires
 To build run `./build-in-docker.sh`. The resulting binary is created in `../artifacts/bin/genicam_ip_assign` with required .so libraries in the same folder.
 
 Expected build output (note: /opt/... paths are inside-docker)
+
+<details>
+  <summary>Expand example build output</summary>
+
 ```
 $ ./build-in-docker.sh
 Sending build context to Docker daemon  157.7kB
@@ -106,6 +110,8 @@ Running main() from gtest_main.cc
 [==========] 8 tests from 4 test cases ran. (404 ms total)
 [  PASSED  ] 8 tests.
 ```
+
+</details>
 
 ## Run
 The resulting binary can be executed inside any `ld-linux-x86-64.so.2`-environmanet with backward-compatible to ubuntu 18.04 versions of
