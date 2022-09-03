@@ -47,3 +47,8 @@ SystemCameras DiscoverCameras(int expected_device_count, int max_timeout_ms, std
     log << result.cameras_ordered_by_mac.size() << " devices found\n";
     return result;
 }
+
+uint32_t IpAsUint32ForLucidGenTL(const Ip4Octets& octets)
+{
+    return uint32_t(octets[0]) << 24 | uint32_t(octets[1]) << 16 | uint32_t(octets[2]) << 8 | uint32_t(octets[3]);
+}
